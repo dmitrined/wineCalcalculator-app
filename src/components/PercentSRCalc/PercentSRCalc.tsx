@@ -1,10 +1,15 @@
 import React, { useState, useMemo } from "react";
+// Импорт нового компонента
+import FormulPercentSRCalc from "./FormulPercentSRCalc"; 
 
 // Основной компонент приложения
 const PercentSRCalc = () => {
   // Состояния для входных данных
   const [percentSR, setPercentSR] = useState(""); // Соответствует D2: Желаемый % SR
   const [literWein, setLiterWein] = useState(""); // Соответствует F2: Liter Wein
+  
+  // Состояние для отображения формулы
+  const [showFormula, setShowFormula] = useState(false); // НОВОЕ СОСТОЯНИЕ
 
   // Парсинг входных данных в числа
   const P = parseFloat(percentSR);
@@ -44,6 +49,11 @@ const PercentSRCalc = () => {
       const value = e.target.value.replace(",", "."); // Заменяем запятую на точку для корректного parseFloat
       setter(value);
     };
+    
+  // Функция для переключения видимости формулы
+  const toggleFormula = () => {
+    setShowFormula(prev => !prev);
+  };
 
   // Вспомогательный компонент для отображения результатов
   const ResultDisplay = ({
@@ -73,8 +83,10 @@ const PercentSRCalc = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-4 sm:p-8 flex justify-center items-start pt-10">
-      <div className="w-full max-w-2xl bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 sm:p-8">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-4 sm:p-8 flex flex-col items-center pt-10"> {/* Изменено на flex-col items-center */}
+      
+      {/* Контейнер калькулятора */}
+      <div className="w-full max-w-2xl bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 sm:p-8 mb-8">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-center mb-6 text-gray-800 dark:text-white">
            SR Rechner 
         </h1>
@@ -149,16 +161,31 @@ const PercentSRCalc = () => {
           <ResultDisplay
             label="SR % auf"
             value={resultAuf}
-            description=""
+            description="Basierend auf dem Volumen des Grundweins."
           />
 
           <ResultDisplay
             label="SR % in"
             value={resultIn}
-            description=""
+            description="Basierend auf dem Gesamtvolumen der fertigen Mischung."
           />
         </div>
       </div>
+      
+      {/* Кнопка для раскрытия формулы */}
+      <button
+          onClick={toggleFormula}
+          className="w-full max-w-2xl px-6 py-3 mt-4 mb-8 text-lg font-semibold text-teal-600 dark:text-teal-300 bg-white dark:bg-gray-800 border border-teal-600 dark:border-teal-500 rounded-lg shadow-md hover:bg-teal-50 dark:hover:bg-gray-700 transition duration-300"
+      >
+          {showFormula ? 'Formel verstecken (Formel ausblenden)' : 'Die Formeln ansehen'}
+      </button>
+
+      {/* Условный рендеринг компонента FormulPercentSRCalc */}
+      {showFormula && (
+          <div className="w-full max-w-2xl">
+              <FormulPercentSRCalc />
+          </div>
+      )}
     </div>
   );
 };

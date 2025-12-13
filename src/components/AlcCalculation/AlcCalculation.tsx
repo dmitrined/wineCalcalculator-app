@@ -1,4 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react';
+// Импорт нового компонента
+import FormulAlcCalculation from './FormulAlcCalculation';
 
 // Константа для коэффициента пересчета: 1 г/л спирта = 0.1267 % об.
 const CONVERSION_FACTOR = 0.1267;
@@ -74,6 +76,9 @@ const CalculatorField = ({ label, unit, value, onChange, placeholder, isResult, 
 // Основной компонент приложения
 const AlcCalculation = () => {
   
+  // Состояние для отображения формулы
+  const [showFormula, setShowFormula] = useState(false); // НОВОЕ СОСТОЯНИЕ
+
   // --- Блок 1: g/l в % Vol. ---
   const [inputGL, setInputGL] = useState<string>(''); // Ввод g/l
   
@@ -99,7 +104,6 @@ const AlcCalculation = () => {
   // Расчет g/l
   const resultGL = useMemo(() => {
     const numVol = parseAndFormatInput(inputVOL);
-    // ИСПРАВЛЕНИЕ: Условие должно проверять только валидность ввода
     if (isNaN(numVol)) {
       return '';
     }
@@ -112,11 +116,18 @@ const AlcCalculation = () => {
   const handleVOLChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setInputVOL(e.target.value);
   }, []);
+  
+  // Функция для переключения видимости формулы
+  const toggleFormula = () => {
+    setShowFormula(prev => !prev);
+  };
 
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-4 sm:p-8 flex justify-center items-start pt-10">
-      <div className="w-full max-w-lg bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 sm:p-8">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-4 sm:p-8 flex flex-col items-center pt-10">
+      
+      {/* Контейнер калькулятора */}
+      <div className="w-full max-w-lg bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 sm:p-8 mb-6">
         
         <h1 className="text-3xl sm:text-4xl font-extrabold text-center mb-6 text-indigo-700 dark:text-indigo-400">
           Alkohol-Umrechner
@@ -147,7 +158,7 @@ const AlcCalculation = () => {
             onChange={() => {}} // Вывод не редактируется
             placeholder="Ergebnis % Vol."
             isResult={true}
-            formula="Ergebnis = g/l × 0,1267"
+            formula=""
           />
         </div>
 
@@ -176,16 +187,27 @@ const AlcCalculation = () => {
             onChange={() => {}} // Вывод не редактируется
             placeholder="Ergebnis g/l"
             isResult={true}
-            formula="Ergebnis = % Vol. ÷ 0,1267"
+            formula=""
           />
         </div>
 
-        <div className="mt-8 pt-4 border-t border-gray-200 dark:border-gray-700 text-center">
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-                Umrechnungsfaktor: 1 g/l = 0,1267 % Vol.
-            </p>
-        </div>
+        
       </div>
+      
+      {/* Кнопка для раскрытия формулы */}
+      <button
+          onClick={toggleFormula}
+          className="w-full max-w-lg px-6 py-3 mt-4 mb-8 text-lg font-semibold text-indigo-600 dark:text-indigo-300 bg-white dark:bg-gray-800 border border-indigo-600 dark:border-indigo-500 rounded-lg shadow-md hover:bg-indigo-50 dark:hover:bg-gray-700 transition duration-300"
+      >
+          {showFormula ? 'Formeln verstecken (Formeln ausblenden)' : 'Die Formeln ansehen'}
+      </button>
+
+      {/* Условный рендеринг компонента FormulAlcCalculation */}
+      {showFormula && (
+          <div className="w-full max-w-lg">
+              <FormulAlcCalculation />
+          </div>
+      )}
     </div>
   );
 };

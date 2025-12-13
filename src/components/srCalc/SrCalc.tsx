@@ -1,6 +1,8 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from 'formik';
 import * as Yup from 'yup';
+// Предполагаем, что FormulSRCalc доступен в том же проекте
+import FormulSRCalc from './FormulSRCalc'; 
 
 // --- Определение интерфейсов и схемы валидации Yup ---
 
@@ -87,7 +89,7 @@ const validationSchema = Yup.object().shape({
 });
 
 
-// --- Вспомогательный компонент для отображения результатов ---
+// --- Вспомогательный компонент для отображения результатов (без изменений) ---
 
 const ResultDisplay: React.FC<{ label: string; value: number; description: string }> = ({
   label,
@@ -108,7 +110,7 @@ const ResultDisplay: React.FC<{ label: string; value: number; description: strin
 );
 
 
-// --- Вспомогательный компонент для поля ввода ---
+// --- Вспомогательный компонент для поля ввода (без изменений) ---
 
 const InputField: React.FC<{ name: keyof FormValues; label: string; unit: string; colorClass: string; placeholder: string }> = ({ 
     name, 
@@ -146,7 +148,7 @@ const InputField: React.FC<{ name: keyof FormValues; label: string; unit: string
 };
 
 
-// --- Функция расчета ---
+// --- Функция расчета (без изменений) ---
 
 const calculateResults = (values: FormValues): CalculationResults => {
     // Безопасно парсим значения, обрабатывая пустые строки и запятые
@@ -182,6 +184,9 @@ const SrCalc: React.FC = () => {
         ziel_gl: "",  
     };
 
+    // Состояние для управления видимостью компонента FormulSRCalc
+    const [showFormula, setShowFormula] = React.useState(false);
+
     const [results, setResults] = React.useState<CalculationResults>(initialResults);
 
     const handleSubmit = (values: FormValues, { setSubmitting }: FormikHelpers<FormValues>) => {
@@ -189,10 +194,17 @@ const SrCalc: React.FC = () => {
         setResults(calculatedResults);
         setSubmitting(false); 
     };
+    
+    // Функция для переключения видимости формулы
+    const toggleFormula = () => {
+        setShowFormula(prev => !prev);
+    };
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-4 sm:p-8 flex justify-center items-start pt-10">
-      <div className="w-full max-w-3xl bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 sm:p-8">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-4 sm:p-8 flex flex-col items-center pt-10"> {/* Изменил flex-justify/items для вертикального расположения */}
+      
+      {/* Контейнер калькулятора */}
+      <div className="w-full max-w-3xl bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-6 sm:p-8 mb-8">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-center mb-6 text-gray-800 dark:text-white">
          SR Verschnittrechner 
         </h1>
@@ -259,14 +271,14 @@ const SrCalc: React.FC = () => {
                     </h2>
 
                     <div className="space-y-4">
-                        {/* Liter SR (F2) */}
+                        {/* Liter SR */}
                         <ResultDisplay
                             label={`Liter SR `}
                             value={results.liter_SR}
                             description={``}
                         />
 
-                        {/* Gesamt Liter (G2) */}
+                        {/* Gesamt Liter */}
                         <ResultDisplay
                             label="Gesamt Liter"
                             value={results.gesamt_Liter}
@@ -277,6 +289,22 @@ const SrCalc: React.FC = () => {
             )}
         </Formik>
       </div>
+      
+      {/* Кнопка для раскрытия формулы */}
+      <button
+          onClick={toggleFormula}
+          className="w-full max-w-3xl px-6 py-3 mb-8 text-lg font-semibold text-teal-600 dark:text-teal-300 bg-white dark:bg-gray-800 border border-teal-600 dark:border-teal-500 rounded-lg shadow-md hover:bg-teal-50 dark:hover:bg-gray-700 transition duration-300"
+      >
+          {showFormula ? 'Formel verstecken (Formel ausblenden)' : 'Die Formel ansehen'}
+      </button>
+
+      {/* Условный рендеринг компонента FormulSRCalc */}
+      {showFormula && (
+          <div className="w-full max-w-3xl">
+              <FormulSRCalc />
+          </div>
+      )}
+      
     </div>
   );
 };
