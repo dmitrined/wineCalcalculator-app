@@ -29,7 +29,7 @@ const FormulSRCalc: React.FC = () => {
                 {symbol} 
             </div>
             {/* Описание и единица измерения */}
-            <div className="flex-grow">
+            <div className="grow">
                 <p className="text-gray-900 dark:text-white font-medium text-sm sm:text-base">{description}</p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">Einheit: {unit}</p>
             </div>

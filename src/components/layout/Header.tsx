@@ -25,9 +25,10 @@ const Header: React.FC = () => {
   };
 
   const navigationItems = [
-    { label: 'SR Rechner', path: '/sr auf||in' },
-    { label: 'Alkohol-Umrechner', path: '/alc' },
-    { label: 'Verschnitt Rechner', path: '/srCalc' },
+    { label: 'SR Rechner auf/in', path: '/sr-rechner-auf-in' },
+  { label: 'Alkohol-Umrechner', path: '/alkohol-umrechner' },
+  { label: 'SR Verschnitt Rechner', path: '/sr-verschnitt-rechner' },
+  { label: 'Mehrfach-Verschnitt', path: '/mehrfach-verschnitt' },
   ];
 
   return (

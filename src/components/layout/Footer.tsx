@@ -15,14 +15,16 @@ const Footer: React.FC = () => {
       <div className='container mx-auto px-4 py-12'>
         <div className='grid grid-cols-1 md:grid-cols-4 gap-8'>
           
-<span>...</span>
+<span>
+  Wine Calculator App - 
+</span>
          
         </div>
 
         {/* Bottom Bar */}
         <div className='border-t border-gray-800 mt-8 pt-8 text-center text-gray-400'>
           <p>
-            &copy; {new Date().getFullYear()} Wine Calculator. {t.rights}
+            &copy; {new Date().getFullYear()} Wine Calculator App. all rights reserved.
           </p>
         </div>
       </div>

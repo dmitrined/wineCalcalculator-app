@@ -13,7 +13,7 @@ const FormulAlcCalculation: React.FC = () => {
     // Вспомогательный компонент для визуальной дроби
     const FractionDisplay: React.FC<{ numerator: React.ReactNode; denominator: React.ReactNode; size?: string }> = ({ numerator, denominator, size = '3xl' }) => (
         // Уменьшенный min-w для мобильных
-        <div className="flex flex-col items-center min-w-[80px] sm:min-w-[100px] mx-2">
+        <div className="flex flex-col items-center min-w-20 sm:min-w-24 mx-2">
             <div className={`pb-1 border-b-4 border-gray-900 dark:border-white w-full text-center text-xl sm:text-${size} font-mono`}>
                 {numerator}
             </div>

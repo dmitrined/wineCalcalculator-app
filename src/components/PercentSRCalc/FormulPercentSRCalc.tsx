@@ -18,7 +18,7 @@ const FormulPercentSRCalc: React.FC = () => {
                 {symbol}
             </div>
             {/* Описание */}
-            <div className="flex-grow">
+            <div className="grow">
                 <p className="text-gray-900 dark:text-white font-medium text-sm sm:text-base">{description}</p>
             </div>
         </div>
