@@ -1,15 +1,6 @@
 import React from 'react';
-import { useAppSelector } from '../../app/hooks';
-import { translations } from '../../language/translations';
 
 const Footer: React.FC = () => {
-  const currentLanguage = useAppSelector(
-    (state) => state.language.currentLanguage
-  );
-  const t = translations[currentLanguage].footer;
-
-  
-
   return (
     <footer className='bg-gray-900 text-white mt-16'>
       <div className='container mx-auto px-4 py-12'>
